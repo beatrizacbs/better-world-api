@@ -1,17 +1,27 @@
+/*
+ * Developed by beatrizacbs@gmail.com
+ * Copyright (c) 08/04/19 23:23
+ */
+
 package br.com.betterworld.models;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Document(collection = "user")
 public class User {
 
     @Id
     private ObjectId id;
+    @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     private String email;
     private String password;
     private String name;
@@ -19,6 +29,8 @@ public class User {
     private List<Event> hostedEvents;
     private List<Event> participantEvents;
     private List<ObjectId> connections;
+    @DBRef
+    private Set<Role> roles;
 
     public User() {
     }
@@ -95,5 +107,13 @@ public class User {
 
     public void setConnections(List<ObjectId> connections) {
         this.connections = connections;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
