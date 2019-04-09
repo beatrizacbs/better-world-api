@@ -43,6 +43,12 @@ public class CustomUserDetailService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    /**
+     * Method for handling the login mechanism that checks or compares username with the user from MongoDB collection
+     * @param email user email
+     * @return user details
+     * @throws UsernameNotFoundException if the username is not in the database
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email);
@@ -53,10 +59,21 @@ public class CustomUserDetailService implements UserDetailsService {
         return null;
     }
 
+    /**
+     *  Method for connecting MongoDB user to Spring Security user as called from the `loadUserByUsername` method
+     * @param user user
+     * @param authorities authorities
+     * @return user details
+     */
     private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
+    /**
+     * method for converting the user roles as GrantedAuthority collection
+     * @param userRoles roles
+     * @return granted authority list
+     */
     private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
         Set<GrantedAuthority> roles = new HashSet<>();
         userRoles.forEach((role) -> {
