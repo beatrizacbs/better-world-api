@@ -11,13 +11,16 @@ import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 @Document(collection = "user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     private ObjectId id;
@@ -25,17 +28,17 @@ public class User {
     private String email;
     private String password;
     private String name;
-    private Date birthDate;
+    private LocalDate birthDate;
     private List<Event> hostedEvents;
     private List<Event> participantEvents;
     private List<ObjectId> connections;
     @DBRef
-    private Set<Role> roles;
+    private Set<GrantedAuthority> roles;
 
     public User() {
     }
 
-    public User(String email, String password, String name, Date birthDate, List<Event> hostedEvents, List<Event> participantEvents, List<ObjectId> connections) {
+    public User(String email, String password, String name, LocalDate birthDate, List<Event> hostedEvents, List<Event> participantEvents, List<ObjectId> connections) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -61,8 +64,38 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -77,11 +110,11 @@ public class User {
         this.name = name;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -109,11 +142,11 @@ public class User {
         this.connections = connections;
     }
 
-    public Set<Role> getRoles() {
+    public Set<GrantedAuthority> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<GrantedAuthority> roles) {
         this.roles = roles;
     }
 }
