@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class AuthController {
     UserRepository users;
 
     @PostMapping("/signin")
-    public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
+    public ResponseEntity signin(@RequestBody AuthenticationRequest data, HttpServletResponse response) {
 
         try {
             String email = data.getEmail();
@@ -50,11 +51,9 @@ public class AuthController {
             user.getRoles().forEach(role->roles.add(role.getAuthority()));
 
             String token = jwtTokenProvider.createToken(email, roles);
+            response.addHeader("Authorization", "Bearer "+token);
 
-            Map<Object, Object> model = new HashMap<>();
-            model.put("email", email);
-            model.put("token", token);
-            return ResponseEntity.ok(model);
+            return ResponseEntity.ok().body(null);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid email/password supplied");
         }
