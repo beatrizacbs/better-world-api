@@ -2,7 +2,7 @@
  * Developed by jrafaeldesantana@gmail.com
  * Copyright (c) 14/04/19 14:44
  */
-package br.com.betterworld.services;
+package br.com.betterworld.services.impl;
 
 import br.com.betterworld.models.User;
 import br.com.betterworld.repositories.UserRepository;

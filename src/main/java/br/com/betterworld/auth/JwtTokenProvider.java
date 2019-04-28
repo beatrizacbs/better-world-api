@@ -5,7 +5,7 @@
 package br.com.betterworld.auth;
 
 import br.com.betterworld.exceptions.InvalidJwtAuthenticationException;
-import br.com.betterworld.services.MongoUserDetailsService;
+import br.com.betterworld.services.impl.MongoUserDetailsService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
