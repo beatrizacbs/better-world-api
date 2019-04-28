@@ -6,8 +6,11 @@ package br.com.betterworld.controllers;
 
 import br.com.betterworld.auth.AuthenticationRequest;
 import br.com.betterworld.auth.JwtTokenProvider;
+import br.com.betterworld.auth.RegisterRequest;
+import br.com.betterworld.exceptions.EmailAlreadyRegisteredException;
 import br.com.betterworld.models.User;
 import br.com.betterworld.repositories.UserRepository;
+import br.com.betterworld.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +20,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,16 +36,16 @@ public class AuthController {
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    UserRepository users;
+    UserService users;
 
     @PostMapping("/signin")
-    public ResponseEntity signin(@RequestBody AuthenticationRequest data, HttpServletResponse response) {
+    public ResponseEntity signin(@Valid @RequestBody AuthenticationRequest data, HttpServletResponse response) {
 
         try {
             String email = data.getEmail();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, data.getPassword()));
 
-            User user = this.users.findByEmail(email);
+            User user = users.get(email);
 
             List<String> roles = new ArrayList<>();
             user.getRoles().forEach(role->roles.add(role.getAuthority()));
@@ -54,4 +58,16 @@ public class AuthController {
             throw new BadCredentialsException("Invalid email/password supplied");
         }
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity signup(@Valid @RequestBody RegisterRequest data, HttpServletResponse response){
+        try {
+            users.createUserAccount(data);
+            return ResponseEntity.ok().body(users);
+        } catch (EmailAlreadyRegisteredException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 }
