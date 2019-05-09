@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.4.RELEASE</version>
+		<version>1.5.10.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.betterworld</groupId>
@@ -20,6 +20,7 @@
 	<description>Better World's backend application</description>
 
 	<properties>
+        <jjwt.version>0.7.0</jjwt.version>
 		<java.version>1.8</java.version>
 	</properties>
 
@@ -55,7 +56,7 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.7.0</version>
+            <version>${jjwt.version}</version>
         </dependency>
     </dependencies>
 

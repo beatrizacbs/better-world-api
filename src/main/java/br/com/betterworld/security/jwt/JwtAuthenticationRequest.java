@@ -1,19 +1,25 @@
-/*
- * Developed by jrafaeldesantana@gmail.com
- * Copyright (c) 14/04/19 20:05
- */
+package br.com.betterworld.security.jwt;
 
-package br.com.betterworld.auth;
-
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
-public class AuthenticationRequest implements Serializable {
+public class JwtAuthenticationRequest implements Serializable {
 
-    @NotBlank(message = "Email is mandatory")
+    private  static final long serialVersionUID = 1L;
+
     private String email;
-    @NotBlank(message = "Password is mandatory")
     private String password;
+
+
+    public JwtAuthenticationRequest(){
+        super();
+    }
+
+    public JwtAuthenticationRequest(String email, String password){
+
+        this.setEmail(email);
+        this.setPassword(password);
+
+    }
 
     public String getEmail() {
         return email;
