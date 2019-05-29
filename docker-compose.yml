@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  web-project-api-pro:
+    container_name: web-project-api-pro
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+    ports:
+      - '8082:8082'
+    command: rm -rf ./target/api-0.0.1-SNAPSHOT.jar && mvn package && java -jar ./target/api-0.0.1-SNAPSHOT.jar
