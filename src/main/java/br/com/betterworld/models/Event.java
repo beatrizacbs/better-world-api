@@ -5,6 +5,7 @@
 
 package br.com.betterworld.models;
 
+import br.com.betterworld.security.entity.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,17 +17,17 @@ import java.util.List;
 public class Event {
 
     @Id
-    private ObjectId id;
+    private String id;
     private String title;
     private String description;
     private String address;
     private Date date;
-    private List<ObjectId> participants;
+    private List<String> participants;
 
     public Event() {
     }
 
-    public Event(String title, String description, String address, Date date, List<ObjectId> participants) {
+    public Event(String title, String description, String address, Date date, List<String> participants) {
         this.title = title;
         this.description = description;
         this.address = address;
@@ -34,11 +35,11 @@ public class Event {
         this.participants = participants;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -74,11 +75,11 @@ public class Event {
         this.date = date;
     }
 
-    public List<ObjectId> getParticipants() {
+    public List<String> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<ObjectId> participants) {
+    public void setParticipants(List<String> participants) {
         this.participants = participants;
     }
 }

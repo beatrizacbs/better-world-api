@@ -23,8 +23,4 @@ public class Response<T> {
         }
         return erros;
     }
-
-    public void setErros(List<String> erros) {
-        this.erros = erros;
-    }
 }

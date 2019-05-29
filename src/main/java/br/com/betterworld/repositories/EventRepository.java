@@ -4,9 +4,10 @@
  */
 package br.com.betterworld.repositories;
 
-import br.com.betterworld.models.Role;
+import br.com.betterworld.models.Event;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface RoleRepository extends MongoRepository<Role, String> {
-    Role findRoleByRole(String role);
+@Repository
+public interface EventRepository extends MongoRepository<Event, String> {
 }
